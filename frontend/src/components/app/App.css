@@ -1,0 +1,13 @@
+.queueAndLoopDiv{
+    display: flex;
+    flex-direction: row;
+    gap: 10em;
+    padding: 5em;
+    height: 50em;
+    
+}
+
+.pageContent{
+    padding-left: 10em;
+    padding-right: 10em;
+}

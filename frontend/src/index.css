@@ -3,6 +3,8 @@
   line-height: 1.5;
   font-weight: 400;
 
+  width: 100%;
+
   color-scheme: light dark;
   color: var(--color-text);
   background-color: var(--color-background);
@@ -15,7 +17,7 @@
   --color-primary: #4794ED;
   --color-secondary: #B86B12;
   --color-background: #A5C4E2;
-  --color-background-secondary: #A5C4E2;
+  --color-background-secondary: #85ADCE;
   --color-text: #f9f9f9;
 }
 
@@ -32,14 +34,22 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  
+  flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
 }
 
+h2 {
+  font-size: 2.6em;
+  
+  line-height: 1;
+}
+
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
+  margin: 0;
+  line-height: 0.8;
 }
 
 button {
