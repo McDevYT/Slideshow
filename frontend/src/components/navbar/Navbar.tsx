@@ -1,11 +1,11 @@
 import "./Navbar.css";
 
 function Navbar() {
-    return (
+  return (
     <div className="navbar">
       <h1>Slideshow</h1>
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

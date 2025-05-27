@@ -1,13 +1,19 @@
-.queueAndLoopDiv{
-    display: flex;
-    flex-direction: row;
-    gap: 10em;
-    padding: 5em;
-    height: 50em;
-    
+.queueAndLoopDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: clamp(1em, 5vw, 5em);
+  height: auto;
 }
 
-.pageContent{
-    padding-left: 10em;
-    padding-right: 10em;
+.pageContent {
+  padding: clamp(3em, 5vw, 5em);
+}
+
+@media (max-width: 768px) {
+  .queueAndLoopDiv {
+    gap: 2em;
+
+    flex-wrap: wrap;
+  }
 }

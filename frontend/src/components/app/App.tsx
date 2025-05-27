@@ -1,19 +1,22 @@
-import Navbar from "../navbar/Navbar"
-import Queue from "../queue/Queue"
-import "./App.css"
+import ImageList from "../image-list/ImageList";
+import Navbar from "../navbar/Navbar";
+import Queue from "../queue/Queue";
+import "./App.css";
 
 function App() {
-    return (
+  return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="pageContent">
         <div className="queueAndLoopDiv">
-          <Queue/>
-          <Queue/>
+          <Queue />
+          <Queue />
         </div>
+
+        <ImageList />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,10 +1,9 @@
-
 function QueueItem() {
-    return (
+  return (
     <div className="queueItem">
-      <div className="queueImage"></div>
+      <img src="https://placehold.co/600x400" className="queueImage" />
     </div>
-  )
+  );
 }
 
-export default QueueItem
+export default QueueItem;
