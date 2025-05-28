@@ -50,6 +50,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   background: var(--color-button);
+  user-select: none;
 }
 
 button:hover {

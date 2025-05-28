@@ -21,7 +21,7 @@
   height: 20em;
 
   overflow: hidden;
-
+  user-select: none;
   border-radius: 2em;
 }
 
@@ -45,7 +45,7 @@
 
 .controlButton {
   aspect-ratio: 1 / 1;
-  width: 3em; /* Consistent size */
+  width: 3em;
   min-width: 2em;
   max-width: 4em;
 
@@ -53,9 +53,7 @@
   border: none;
   border-radius: 0.5em;
 
-  transition:
-    background-color 0.2s,
-    transform 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
   cursor: pointer;
 }
 

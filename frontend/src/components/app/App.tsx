@@ -1,6 +1,6 @@
 import ImageList from "../image-list/ImageList";
+import ElementList from "../List/ElementList";
 import Navbar from "../navbar/Navbar";
-import Queue from "../queue/Queue";
 import "./App.css";
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
       <Navbar />
       <div className="pageContent">
         <div className="queueAndLoopDiv">
-          <Queue />
-          <Queue />
+          <ElementList label="Queue" items={[]} />
+          <ElementList label="Loop" items={["1", "2", "3"]} />
         </div>
 
         <ImageList />
