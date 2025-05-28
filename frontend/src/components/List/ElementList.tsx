@@ -3,7 +3,7 @@ import ListItem from "./ListItem";
 
 interface ListPropsInterface {
   label: string;
-  items: any[];
+  items: string[];
 }
 
 function List(props: ListPropsInterface) {
@@ -17,7 +17,9 @@ function List(props: ListPropsInterface) {
         {props.items.length <= 0 ? (
           <h3>No Items</h3>
         ) : (
-          props.items.map((_item, index) => <ListItem key={index} />)
+          props.items.map((_item, index) => (
+            <ListItem key={index} src={_item} />
+          ))
         )}
       </div>
     </div>

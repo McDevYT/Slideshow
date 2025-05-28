@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import "./Navbar.css";
 import { Upload } from "lucide-react";
-import { context } from "../app/App";
+import { useDataContext } from "../../models/DataContext";
 
 function Navbar() {
-  const { setIsPopupOpen } = useContext(context);
+  const { setIsPopupOpen } = useDataContext();
 
   return (
     <div className="navbar">

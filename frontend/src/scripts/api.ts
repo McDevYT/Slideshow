@@ -1,14 +1,23 @@
 import axios from "axios";
 
-export async function getImage() {
-  axios
-    .get("http://localhost:3141/GetImage")
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+export async function getImage(name: string) {
+  try {
+    const response = await axios.get(`http://localhost:3141/images/${name}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    return null;
+  }
+}
+
+export async function get(element: "images" | "loop" | "queue" = "images") {
+  try {
+    const response = await axios.get(`http://localhost:3141/${element}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching ${element}:`, error);
+    return null;
+  }
 }
 
 export async function postImage(file: File): Promise<string | null> {

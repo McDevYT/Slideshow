@@ -5,7 +5,9 @@
   background-color: var(--color-background-secondary);
   padding: clamp(1em, 4vw, 3em);
   border-radius: 2em;
-  height: auto;
+  height: 25em;
+  scrollbar-width: none;
+  overflow-y: scroll;
 }
 
 .listContainer {
