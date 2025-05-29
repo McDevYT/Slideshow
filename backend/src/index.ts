@@ -79,7 +79,7 @@ app.get("/images/next", (req: Request, res: Response) => {
     }
 
     if (files.length === 0) {
-      return res.status(204).json({ image: "https://http.dog/500.jpg" });
+      return res.status(204).json({ image: undefined });
     }
 
     const randomIndex = Math.floor(Math.random() * files.length);

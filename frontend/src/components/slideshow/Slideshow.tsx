@@ -11,7 +11,9 @@ function Slideshow() {
     try {
       const image = await nextImage();
       console.log("Fetched image:", image);
-      setCurrentImage(image ?? currentImage);
+      setCurrentImage(
+        image ? SERVER_IP + "/images/" + image : "../../public/500.jpg"
+      );
     } catch (error) {
       console.error("Error fetching next image:", error);
     }
@@ -36,7 +38,7 @@ function Slideshow() {
     <div className="slideshowDiv">
       {currentImage && (
         <img
-          src={`${SERVER_IP}/images/${currentImage}`}
+          src={currentImage}
           className={`slideshowImage ${fade ? "fade-in" : "fade-out"}`}
           alt="Slideshow"
         />
