@@ -63,9 +63,10 @@ app.get("/images/next", (req: Request, res: Response) => {
   }
 
   if (lists.loop.length > 0) {
+    loopIndex = (loopIndex + 1) % lists.loop.length;
     const nextImage = lists.loop[loopIndex];
 
-    res.json({ image: nextImage ?? "1748551313027.png" });
+    res.json({ image: nextImage });
     return;
   }
 
@@ -78,7 +79,7 @@ app.get("/images/next", (req: Request, res: Response) => {
     }
 
     if (files.length === 0) {
-      return res.status(204).send();
+      return res.status(204).json({ image: "https://http.dog/500.jpg" });
     }
 
     const randomIndex = Math.floor(Math.random() * files.length);
