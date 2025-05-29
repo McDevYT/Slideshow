@@ -114,3 +114,17 @@ export async function clear(element: "loop" | "queue" = "queue") {
     return null;
   }
 }
+
+export async function nextImage(): Promise<string | undefined> {
+  try {
+    const res = await fetch(`${SERVER_IP}/images/next`);
+    if (res.status === 204) {
+      console.error("Error fetching image");
+      return;
+    }
+    const data: { image: string } = await res.json();
+    return data.image;
+  } catch (err) {
+    console.error("Error fetching image:", err);
+  }
+}

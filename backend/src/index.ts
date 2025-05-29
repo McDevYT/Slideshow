@@ -64,8 +64,8 @@ app.get("/images/next", (req: Request, res: Response) => {
 
   if (lists.loop.length > 0) {
     const nextImage = lists.loop[loopIndex];
-    loopIndex = (loopIndex + 1) % lists.loop.length;
-    res.json({ image: nextImage });
+
+    res.json({ image: nextImage ?? "1748551313027.png" });
     return;
   }
 
@@ -171,5 +171,5 @@ app.delete("/delete/:image", (req: Request, res: Response) => {
 app.use("/images", express.static("public/images"));
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -1,0 +1,28 @@
+.queue{
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+    background-color: var(--color-background-secondary);
+    padding: 3em;
+    height: 100%;
+    border-radius: 2em;
+}
+
+.queueContainer{
+    width: 100%;
+    height: 100%;
+}
+
+.queueImage{
+    background-color: aliceblue;
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+
+.queueItem{
+    background-color: var(--color-primary);
+    border-radius: 2em;
+    height: 8em;
+    overflow: hidden;
+    width: 100%;
+}
