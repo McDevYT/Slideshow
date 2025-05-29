@@ -1,0 +1,20 @@
+.confirmationPopupTitle {
+  color: black;
+  font-size: 2em;
+}
+
+.confirmationPopupParagraph {
+  color: black;
+}
+
+.confirmationPopupButton {
+  padding: 10px;
+}
+
+.confirmationPopupButtonDiv {
+  display: flex;
+  flex-direction: 10px;
+  justify-content: end;
+  width: 100%;
+  gap: 1em;
+}

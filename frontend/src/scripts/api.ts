@@ -1,22 +1,81 @@
 import axios from "axios";
+import { SERVER_IP } from "../models/constants";
 
-export async function getImage(name: string) {
+export async function deleteImage(name: string) {
   try {
-    const response = await axios.get(`http://localhost:3141/images/${name}`);
+    const response = await axios.delete(`${SERVER_IP}/delete/${name}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching image:", error);
+    console.error("Error deleting image:", error);
     return null;
   }
 }
 
 export async function get(element: "images" | "loop" | "queue" = "images") {
   try {
-    const response = await axios.get(`http://localhost:3141/${element}`);
+    const response = await axios.get(`${SERVER_IP}/${element}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching ${element}:`, error);
     return null;
+  }
+}
+
+export async function removeImageFromList(
+  list: "queue" | "loop",
+  imageName: string
+): Promise<void> {
+  if (!imageName) {
+    console.error("Image name is required.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${SERVER_IP}/${list}/remove/${encodeURIComponent(imageName)}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.text();
+
+    if (response.ok) {
+      console.log(data);
+    } else {
+      console.error(`Failed to remove image from ${list}: ${data}`);
+    }
+  } catch (error) {
+    console.error(`Error removing image from ${list}:`, error);
+  }
+}
+
+export async function addImageToList(
+  list: "queue" | "loop",
+  imageName: string
+): Promise<void> {
+  if (!imageName) {
+    console.error("Image name is required.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${SERVER_IP}/${list}/add/${encodeURIComponent(imageName)}`,
+      {
+        method: "POST",
+      }
+    );
+
+    const data = await response.text();
+
+    if (response.ok) {
+      console.log(data);
+    } else {
+      console.error(`Failed to add image to ${list}: ${data}`);
+    }
+  } catch (error) {
+    console.error(`Error adding image to ${list}:`, error);
   }
 }
 
@@ -25,7 +84,7 @@ export async function postImage(file: File): Promise<string | null> {
   formData.append("image", file);
 
   try {
-    const response = await fetch("http://localhost:3141/upload", {
+    const response = await fetch(`${SERVER_IP}/upload`, {
       method: "POST",
       body: formData,
     });
@@ -39,6 +98,19 @@ export async function postImage(file: File): Promise<string | null> {
     return result.url;
   } catch (error) {
     console.error("Error uploading image:", error);
+    return null;
+  }
+}
+
+export async function clear(element: "loop" | "queue" = "queue") {
+  try {
+    const response = await axios.delete(`${SERVER_IP}/${element}/clear`);
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      `Error clearing ${element}:`,
+      error.response?.data || error.message
+    );
     return null;
   }
 }

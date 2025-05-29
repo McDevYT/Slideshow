@@ -7,8 +7,12 @@ import fs from "fs";
 const app = express();
 const PORT = 3141;
 
-const queue: string[] = ["1748434857398.png"];
-const loop: string[] = ["1748434857398.png"];
+let loopIndex = 0;
+
+const lists: Record<"queue" | "loop", string[]> = {
+  queue: [],
+  loop: [],
+};
 
 app.use(
   cors({
@@ -46,41 +50,122 @@ app.get("/images", (req, res) => {
       return res.status(500).json({ error: "Failed to list images." });
     }
 
-    const urls = files.map((filename) => `/images/${filename}`);
+    const urls = files;
     res.json(urls);
   });
 });
 
-app.get("/queue", (req, res) => {
-  const urls = queue.map((filename) => `/images/${filename}`);
+app.get("/images/next", (req: Request, res: Response) => {
+  if (lists.queue.length > 0) {
+    const nextImage = lists.queue.shift()!;
+    res.json({ image: nextImage });
+    return;
+  }
+
+  if (lists.loop.length > 0) {
+    const nextImage = lists.loop[loopIndex];
+    loopIndex = (loopIndex + 1) % lists.loop.length;
+    res.json({ image: nextImage });
+    return;
+  }
+
+  const imagesDir = path.join(__dirname, "../public/images");
+
+  fs.readdir(imagesDir, (err, files) => {
+    if (err) {
+      console.error("Error reading image directory:", err);
+      return res.status(500).json({ error: "Failed to read images." });
+    }
+
+    if (files.length === 0) {
+      return res.status(204).send();
+    }
+
+    const randomIndex = Math.floor(Math.random() * files.length);
+    const randomImage = files[randomIndex];
+    res.json({ image: randomImage });
+    return;
+  });
+});
+
+app.get("/:list", (req, res) => {
+  const list = req.params.list;
+  if (list !== "queue" && list !== "loop") {
+    res.status(400).send("Invalid list name.");
+    return;
+  }
+  const urls = lists[list];
   res.json(urls);
 });
 
-app.get("/loop", (req, res) => {
-  const urls = loop.map((filename) => `/images/${filename}`);
-  res.json(urls);
+app.delete("/:list/clear", (req, res) => {
+  const list = req.params.list;
+  if (list !== "queue" && list !== "loop") {
+    res.status(400).send("Invalid list name.");
+    return;
+  }
+  lists[list].length = 0;
+  res.send(`${list} cleared!`);
 });
 
-app.post("/loop/add/:image", (req, res) => {
+app.post("/:list/add/:image", (req, res) => {
+  const list = req.params.list;
+  if (list !== "queue" && list !== "loop") {
+    res.status(400).send("Invalid list name.");
+    return;
+  }
   const image = req.params.image;
-  const index = loop.indexOf(image);
-  if (index == -1) {
-    loop.push(image);
-    res.send(image + " added to loop");
+  const arr = lists[list];
+  if (!arr.includes(image)) {
+    arr.push(image);
+    res.send(`${image} added to ${list}`);
   } else {
-    res.send(image + " not found or already is in loop");
+    res.send(`${image} not found or already is in ${list}`);
   }
 });
 
-app.delete("/loop/remove/:image", (req, res) => {
+app.delete("/:list/remove/:image", (req, res) => {
+  const list = req.params.list;
+  if (list !== "queue" && list !== "loop") {
+    res.status(400).send("Invalid list name.");
+    return;
+  }
   const image = req.params.image;
-  const index = loop.indexOf(image);
+  const arr = lists[list];
+  const index = arr.indexOf(image);
   if (index !== -1) {
-    loop.splice(index, 1);
-    res.send(image + " removed from loop");
+    arr.splice(index, 1);
+    res.send(`${image} removed from ${list}`);
   } else {
-    res.send(image + " not found in loop");
+    res.send(`${image} not found in ${list}`);
   }
+});
+
+app.delete("/delete/:image", (req: Request, res: Response) => {
+  const imageName = req.params.image;
+  const imagePath = path.join(__dirname, "../public/images", imageName);
+
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).json({ error: "Image not found." });
+    }
+
+    fs.unlink(imagePath, (unlinkErr) => {
+      if (unlinkErr) {
+        console.error("Error deleting image:", unlinkErr);
+        return res.status(500).json({ error: "Failed to delete image." });
+      }
+
+      ["queue", "loop"].forEach((list) => {
+        const index = lists[list as "queue" | "loop"].indexOf(imageName);
+        if (index !== -1) {
+          lists[list as "queue" | "loop"].splice(index, 1);
+        }
+      });
+
+      res.json({ message: `${imageName} deleted successfully.` });
+    });
+  });
 });
 
 app.use("/images", express.static("public/images"));

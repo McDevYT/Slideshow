@@ -11,7 +11,9 @@
   align-items: center;
 }
 
-.uploadButton {
-  width: 3em;
-  height: 3em;
+.navbarButtonDiv {
+  display: flex;
+  gap: 1em;
+  height: 100%;
+  align-items: center;
 }

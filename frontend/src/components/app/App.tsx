@@ -5,19 +5,46 @@ import Navbar from "../navbar/Navbar";
 import "./App.css";
 import UploadPopup from "../upload-popup/UploadPopup";
 import { useDataContext } from "../../models/DataContext";
+import { removeImageFromList } from "../../scripts/api";
 
 function App() {
   useMainViewModel();
 
-  const { isPopupOpen, setIsPopupOpen, loop, queue } = useDataContext();
-
+  const { isPopupOpen, setIsPopupOpen, loop, queue, clear, fetchData } =
+    useDataContext();
   return (
     <>
       <Navbar />
       <div className="pageContent">
         <div className="queueAndLoopDiv">
-          <ElementList label="Queue" items={queue} />
-          <ElementList label="Loop" items={loop} />
+          <ElementList
+            label="Queue"
+            items={queue}
+            onClear={() => {
+              clear("queue").then(() => {
+                fetchData();
+              });
+            }}
+            onRemoveElement={(image) => {
+              removeImageFromList("queue", image).then(() => {
+                fetchData();
+              });
+            }}
+          />
+          <ElementList
+            label="Loop"
+            items={loop}
+            onClear={() => {
+              clear("loop").then(() => {
+                fetchData();
+              });
+            }}
+            onRemoveElement={(image) => {
+              removeImageFromList("loop", image).then(() => {
+                fetchData();
+              });
+            }}
+          />
         </div>
 
         <ImageList />

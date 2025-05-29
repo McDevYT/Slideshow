@@ -1,13 +1,85 @@
-function Image(props: { src: string }) {
+import { Download, ListEnd, Repeat, Trash } from "lucide-react";
+import { useConfirm } from "../comfirmation-popup/useConfirm";
+import IconButton from "../icon-button/IconButton";
+import { addImageToList, deleteImage } from "../../scripts/api";
+import { useDataContext } from "../../models/DataContext";
+
+function Image(props: { src: string; image: string }) {
+  const { confirm, Confirm } = useConfirm();
+  const { fetchData } = useDataContext();
+  const handleDelete = async () => {
+    const result = await confirm(
+      "Delete Item",
+      "Are you sure you want to delete this?"
+    );
+    if (result) {
+      deleteImage(props.image).then(() => {
+        fetchData();
+      });
+    } else {
+      console.log("Cancelled");
+    }
+  };
+
+  function downloadImageFromSrc(src: string, filename: string): void {
+    fetch(src)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch image.");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error("Download failed:", error);
+      });
+  }
+
   return (
     <div className="imageElement">
       <img className="image" src={props.src} />
       <div className="controls">
-        <button className="controlButton" />
-        <button className="controlButton" />
-        <button className="controlButton" />
-        <button className="controlButton" />
+        <IconButton
+          color="var(--color-button)"
+          onClick={() => {
+            addImageToList("queue", props.image).then(() => {
+              fetchData();
+            });
+          }}
+          icon={<ListEnd />}
+        />
+        <IconButton
+          color="var(--color-button)"
+          onClick={() => {
+            addImageToList("loop", props.image).then(() => {
+              fetchData();
+            });
+          }}
+          icon={<Repeat />}
+        />
+        <IconButton
+          color="var(--color-button)"
+          onClick={() => {
+            downloadImageFromSrc(props.src, props.image);
+          }}
+          icon={<Download />}
+        />
+        <IconButton
+          color="var(--color-secondary)"
+          onClick={handleDelete}
+          icon={<Trash />}
+        />
       </div>
+      {Confirm}
     </div>
   );
 }

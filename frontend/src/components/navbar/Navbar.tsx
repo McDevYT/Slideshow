@@ -1,21 +1,28 @@
 import "./Navbar.css";
-import { Upload } from "lucide-react";
+import { Upload, RefreshCw } from "lucide-react";
 import { useDataContext } from "../../models/DataContext";
+import IconButton from "../icon-button/IconButton";
 
 function Navbar() {
-  const { setIsPopupOpen } = useDataContext();
+  const { setIsPopupOpen, fetchData } = useDataContext();
 
   return (
     <div className="navbar">
       <h1>Slideshow</h1>
-      <button
-        className="uploadButton"
-        onClick={() => {
-          setIsPopupOpen(true);
-        }}
-      >
-        <Upload />
-      </button>
+      <div className="navbarButtonDiv">
+        <IconButton
+          onClick={() => {
+            fetchData();
+          }}
+          icon={<RefreshCw />}
+        />
+        <IconButton
+          onClick={() => {
+            setIsPopupOpen(true);
+          }}
+          icon={<Upload />}
+        />
+      </div>
     </div>
   );
 }

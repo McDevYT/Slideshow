@@ -4,6 +4,7 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
+import { get, clear } from "../scripts/api";
 
 interface DataContextType {
   images: string[];
@@ -14,6 +15,8 @@ interface DataContextType {
   setQueue: React.Dispatch<React.SetStateAction<string[]>>;
   isPopupOpen: boolean;
   setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchData: () => Promise<void>;
+  clear: (element: "queue" | "loop") => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -30,6 +33,24 @@ export function DataContextProvider({
   const [queue, setQueue] = useState<string[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
+  const fetchData = async (): Promise<void> => {
+    const fetchAndSet = async (
+      label: "images" | "queue" | "loop",
+      setFn: (imgs: string[]) => void
+    ) => {
+      const data = await get(label);
+      const imgs = data.map((img: string) => img);
+      setFn(imgs);
+      console.log(`${label}:`, imgs);
+    };
+
+    await Promise.all([
+      fetchAndSet("images", setImages),
+      fetchAndSet("queue", setQueue),
+      fetchAndSet("loop", setLoop),
+    ]);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -41,6 +62,8 @@ export function DataContextProvider({
         setLoop,
         queue,
         setQueue,
+        fetchData,
+        clear,
       }}
     >
       {children}

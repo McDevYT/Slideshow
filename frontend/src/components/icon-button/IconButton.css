@@ -1,0 +1,6 @@
+.iconButton {
+  width: 3em;
+  height: 3em;
+  background-color: var(--color-primary);
+  margin: 0em;
+}
