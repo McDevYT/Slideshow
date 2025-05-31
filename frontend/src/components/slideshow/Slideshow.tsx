@@ -11,9 +11,7 @@ function Slideshow() {
     try {
       const image = await nextImage();
       console.log("Fetched image:", image);
-      setCurrentImage(
-        image ? SERVER_IP + "/images/" + image : "../../public/500.jpg"
-      );
+      setCurrentImage(image ? SERVER_IP + "/images/" + image : "../../500.jpg");
     } catch (error) {
       console.error("Error fetching next image:", error);
     }
