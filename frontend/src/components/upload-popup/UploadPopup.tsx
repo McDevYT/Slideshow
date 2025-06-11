@@ -15,8 +15,9 @@ const UploadPopup: React.FC<PopupProps> = ({ isVisible, onClose }) => {
 
   const handleClick = async () => {
     if (!file) return;
-
     uploadImage(file);
+    setFile(undefined);
+    if (onClose) onClose();
   };
 
   if (!isVisible) return null;

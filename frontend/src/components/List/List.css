@@ -7,7 +7,7 @@
   border-radius: 2em;
   height: 25em;
   scrollbar-width: none;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .listContainer {
@@ -25,9 +25,10 @@
 }
 
 .listItem {
+  flex-shrink: 0;
   background-color: var(--color-primary);
   border-radius: 2em;
-  height: clamp(5em, 10vw, 8em);
+  height: 15vh;
   overflow: hidden;
   display: flex;
   width: 100%;
