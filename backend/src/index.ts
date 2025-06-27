@@ -33,7 +33,7 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-app.post("/upload", upload.single("image"), (req, res): void => {
+app.post("/api/upload", upload.single("image"), (req, res): void => {
   const file = req.file;
   if (!file) {
     res.status(400).send("No file uploaded.");
@@ -43,7 +43,7 @@ app.post("/upload", upload.single("image"), (req, res): void => {
   res.json({ url: `/images/${file.filename}` });
 });
 
-app.get("/images", (req, res) => {
+app.get("/api/images", (req, res) => {
   const imagesDir = path.join(__dirname, "../public/images");
 
   fs.readdir(imagesDir, (err, files) => {
@@ -57,7 +57,7 @@ app.get("/images", (req, res) => {
   });
 });
 
-app.get("/images/next", (req: Request, res: Response) => {
+app.get("/api/images/next", (req: Request, res: Response) => {
   if (lists.queue.length > 0) {
     const nextImage = lists.queue.shift()!;
     res.json({ image: nextImage });
@@ -91,7 +91,7 @@ app.get("/images/next", (req: Request, res: Response) => {
   });
 });
 
-app.get("/:list", (req, res) => {
+app.get("/api/:list", (req, res) => {
   const list = req.params.list;
   if (list !== "queue" && list !== "loop") {
     res.status(400).send("Invalid list name.");
@@ -101,7 +101,7 @@ app.get("/:list", (req, res) => {
   res.json(urls);
 });
 
-app.delete("/:list/clear", (req, res) => {
+app.delete("/api/:list/clear", (req, res) => {
   const list = req.params.list;
   if (list !== "queue" && list !== "loop") {
     res.status(400).send("Invalid list name.");
@@ -111,7 +111,7 @@ app.delete("/:list/clear", (req, res) => {
   res.send(`${list} cleared!`);
 });
 
-app.post("/:list/add/:image", (req, res) => {
+app.post("/api/:list/add/:image", (req, res) => {
   const list = req.params.list;
   if (list !== "queue" && list !== "loop") {
     res.status(400).send("Invalid list name.");
@@ -127,7 +127,7 @@ app.post("/:list/add/:image", (req, res) => {
   }
 });
 
-app.delete("/:list/remove/:image", (req, res) => {
+app.delete("/api/:list/remove/:image", (req, res) => {
   const list = req.params.list;
   if (list !== "queue" && list !== "loop") {
     res.status(400).send("Invalid list name.");
@@ -144,7 +144,7 @@ app.delete("/:list/remove/:image", (req, res) => {
   }
 });
 
-app.delete("/delete/:image", (req: Request, res: Response) => {
+app.delete("v/delete/:image", (req: Request, res: Response) => {
   const imageName = req.params.image;
   const imagePath = path.join(__dirname, "../public/images", imageName);
 
@@ -171,7 +171,7 @@ app.delete("/delete/:image", (req: Request, res: Response) => {
   });
 });
 
-app.use("/images", express.static("public/images"));
+app.use("/api/images", express.static("public/images"));
 
 app.listen(3141, () => {
   console.log(`Server is running on http://109.199.119.222:3141`);
