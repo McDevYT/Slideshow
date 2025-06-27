@@ -28,7 +28,10 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
 
 app.post("/upload", upload.single("image"), (req, res): void => {
   const file = req.file;
@@ -170,8 +173,6 @@ app.delete("/delete/:image", (req: Request, res: Response) => {
 
 app.use("/images", express.static("public/images"));
 
-app.listen(() => {
-  console.log(
-    `Server is running on http://vbe-webservice.int.vertigis.com/slideshow/api`
-  );
+app.listen(3141, () => {
+  console.log(`Server is running on http://109.199.119.222:3141`);
 });
