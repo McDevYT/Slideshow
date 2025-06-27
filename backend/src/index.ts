@@ -5,7 +5,6 @@ import path from "path";
 import fs from "fs";
 
 const app = express();
-const PORT = 3141;
 
 let loopIndex = 0;
 
@@ -16,7 +15,7 @@ const lists: Record<"queue" | "loop", string[]> = {
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
   })
 );
 
@@ -171,6 +170,8 @@ app.delete("/delete/:image", (req: Request, res: Response) => {
 
 app.use("/images", express.static("public/images"));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(() => {
+  console.log(
+    `Server is running on http://vbe-webservice.int.vertigis.com/slideshow/api`
+  );
 });
