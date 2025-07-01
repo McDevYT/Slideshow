@@ -1,7 +1,7 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.5em, 2vw, 1.5em);
+  gap: clamp(0.2em, 1vw, 1em);
   background-color: var(--color-background-secondary);
   padding: clamp(1em, 4vw, 3em);
   border-radius: 2em;

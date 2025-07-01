@@ -41,6 +41,7 @@ function App() {
             }}
             onRemoveElement={(image) => {
               removeImageFromList("loop", image).then(() => {
+                console.log("Remove Image From Loop");
                 fetchData();
               });
             }}

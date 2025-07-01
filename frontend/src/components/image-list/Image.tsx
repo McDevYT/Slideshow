@@ -49,6 +49,7 @@ function Image(props: { src: string; image: string }) {
       <img className="image" src={props.src} />
       <div className="controls">
         <IconButton
+          className="controlButton"
           color="var(--color-button)"
           onClick={() => {
             addImageToList("queue", props.image).then(() => {
@@ -58,6 +59,7 @@ function Image(props: { src: string; image: string }) {
           icon={<ListEnd />}
         />
         <IconButton
+          className="controlButton"
           color="var(--color-button)"
           onClick={() => {
             addImageToList("loop", props.image).then(() => {
@@ -67,6 +69,7 @@ function Image(props: { src: string; image: string }) {
           icon={<Repeat />}
         />
         <IconButton
+          className="controlButton"
           color="var(--color-button)"
           onClick={() => {
             downloadImageFromSrc(props.src, props.image);
@@ -74,6 +77,7 @@ function Image(props: { src: string; image: string }) {
           icon={<Download />}
         />
         <IconButton
+          className="controlButton"
           color="var(--color-secondary)"
           onClick={handleDelete}
           icon={<Trash />}
