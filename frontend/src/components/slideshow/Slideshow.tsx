@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SERVER_IP } from "../../models/constants";
 import "./Slideshow.css";
 import { nextImage } from "../../scripts/api";
@@ -6,27 +6,57 @@ import { nextImage } from "../../scripts/api";
 function Slideshow() {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [fade, setFade] = useState(true);
+  const lastImageRef = useRef<string | null>(null);
 
-  const loadNextImage = async () => {
+  // Preload image and return the full image path
+  const preloadImage = (imageName: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const fullPath = `${SERVER_IP}/images/${imageName}`;
+
+      img.onload = () => resolve(fullPath);
+      img.onerror = reject;
+      img.src = fullPath;
+    });
+  };
+
+  const loadAndFadeNextImage = async () => {
     try {
-      const image = await nextImage();
-      console.log("Fetched image:", image);
-      setCurrentImage(image ? SERVER_IP + "/images/" + image : "../../500.jpg");
+      const imageName = await nextImage();
+
+      if (!imageName) {
+        console.warn("No image returned from nextImage()");
+        return;
+      }
+
+      const newImageUrl = `${SERVER_IP}/images/${imageName}`;
+
+      if (newImageUrl === lastImageRef.current) {
+        console.log("Same image received; skipping fade.");
+        setCurrentImage(newImageUrl);
+        return;
+      }
+
+      await preloadImage(imageName);
+
+      setFade(false);
+
+      setTimeout(() => {
+        // Set new image and fade in
+        setCurrentImage(newImageUrl);
+        setFade(true);
+        lastImageRef.current = newImageUrl;
+      }, 500);
     } catch (error) {
-      console.error("Error fetching next image:", error);
+      console.error("Error loading next image:", error);
     }
   };
 
   useEffect(() => {
-    loadNextImage();
+    loadAndFadeNextImage();
 
     const interval = setInterval(() => {
-      setFade(false);
-
-      setTimeout(() => {
-        loadNextImage();
-        setFade(true);
-      }, 500);
+      loadAndFadeNextImage();
     }, 15000);
 
     return () => clearInterval(interval);
