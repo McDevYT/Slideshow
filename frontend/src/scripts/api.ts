@@ -1,9 +1,9 @@
 import axios from "axios";
-const ip = "http://109.199.119.222/api";
+import { SERVER_IP } from "../models/constants";
 
 export async function deleteImage(name: string) {
   try {
-    const response = await axios.delete(`${ip}/delete/${name}`);
+    const response = await axios.delete(`${SERVER_IP}/delete/${name}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting image:", error);
@@ -13,7 +13,7 @@ export async function deleteImage(name: string) {
 
 export async function get(element: "images" | "loop" | "queue" = "images") {
   try {
-    const response = await axios.get(`${ip}/${element}`);
+    const response = await axios.get(`${SERVER_IP}/${element}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching ${element}:`, error);
@@ -32,7 +32,7 @@ export async function removeImageFromList(
 
   try {
     const response = await fetch(
-      `${ip}/${list}/remove/${encodeURIComponent(imageName)}`,
+      `${SERVER_IP}/${list}/remove/${encodeURIComponent(imageName)}`,
       {
         method: "DELETE",
       }
@@ -61,7 +61,7 @@ export async function addImageToList(
 
   try {
     const response = await fetch(
-      `${ip}/${list}/add/${encodeURIComponent(imageName)}`,
+      `${SERVER_IP}/${list}/add/${encodeURIComponent(imageName)}`,
       {
         method: "POST",
       }
@@ -84,7 +84,7 @@ export async function postImage(file: File): Promise<string | null> {
   formData.append("image", file);
 
   try {
-    const response = await fetch(`${ip}/upload`, {
+    const response = await fetch(`${SERVER_IP}/upload`, {
       method: "POST",
       body: formData,
     });
@@ -104,7 +104,7 @@ export async function postImage(file: File): Promise<string | null> {
 
 export async function clear(element: "loop" | "queue" = "queue") {
   try {
-    const response = await axios.delete(`${ip}/${element}/clear`);
+    const response = await axios.delete(`${SERVER_IP}/${element}/clear`);
     return response.data;
   } catch (error: any) {
     console.error(
@@ -117,7 +117,7 @@ export async function clear(element: "loop" | "queue" = "queue") {
 
 export async function nextImage(): Promise<string | undefined> {
   try {
-    const res = await fetch(`${ip}/images/next`);
+    const res = await fetch(`${SERVER_IP}/images/next`);
     if (res.status === 204) {
       console.error("Error fetching image");
       return;

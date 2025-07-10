@@ -144,7 +144,7 @@ app.delete("/api/:list/remove/:image", (req, res) => {
   }
 });
 
-app.delete("v/delete/:image", (req: Request, res: Response) => {
+app.delete("api/delete/:image", (req: Request, res: Response) => {
   const imageName = req.params.image;
   const imagePath = path.join(__dirname, "../public/images", imageName);
 
@@ -171,7 +171,10 @@ app.delete("v/delete/:image", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/images", express.static("public/images"));
+app.use(
+  "/api/images",
+  express.static(path.join(__dirname, "../public/images"))
+);
 
 app.listen(3141, () => {
   console.log(`Server is running on http://109.199.119.222:3141`);
