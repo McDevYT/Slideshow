@@ -4,6 +4,9 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+const uploadDir = path.join(__dirname, "public/images");
+fs.mkdirSync(uploadDir, { recursive: true });
+
 const app = express();
 
 let loopIndex = 0;
@@ -21,7 +24,7 @@ app.use(
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images/");
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
