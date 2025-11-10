@@ -4,7 +4,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const uploadDir = path.join(__dirname, "public/images");
+const uploadDir = path.join(__dirname, "../public/images");
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const app = express();
