@@ -4,7 +4,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const uploadDir = path.join(__dirname, "public/images");
+const uploadDir = path.join(__dirname, "../public/images");
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const app = express();
@@ -47,7 +47,7 @@ app.post("/api/upload", upload.single("image"), (req, res): void => {
 });
 
 app.get("/api/images", (req, res) => {
-  const imagesDir = path.join(__dirname, "public/images");
+  const imagesDir = path.join(__dirname, "../public/images");
 
   fs.readdir(imagesDir, (err, files) => {
     if (err) {
@@ -75,7 +75,7 @@ app.get("/api/images/next", (req: Request, res: Response) => {
     return;
   }
 
-  const imagesDir = path.join(__dirname, "public/images");
+  const imagesDir = path.join(__dirname, "../public/images");
 
   fs.readdir(imagesDir, (err, files) => {
     if (err) {
@@ -149,7 +149,7 @@ app.delete("/api/:list/remove/:image", (req, res) => {
 
 app.delete("/api/delete/:image", (req: Request, res: Response) => {
   const imageName = req.params.image;
-  const imagePath = path.join(__dirname, "public/images", imageName);
+  const imagePath = path.join(__dirname, "../public/images", imageName);
 
   fs.access(imagePath, fs.constants.F_OK, (err) => {
     if (err) {
@@ -174,7 +174,10 @@ app.delete("/api/delete/:image", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/images", express.static(path.join(__dirname, "public/images")));
+app.use(
+  "/api/images",
+  express.static(path.join(__dirname, "../public/images"))
+);
 
 app.listen(3141, () => {
   console.log(`Server is running on http://109.199.119.222:3141`);
