@@ -147,7 +147,7 @@ app.delete("/api/:list/remove/:image", (req, res) => {
   }
 });
 
-app.delete("api/delete/:image", (req: Request, res: Response) => {
+app.delete("/api/delete/:image", (req: Request, res: Response) => {
   const imageName = req.params.image;
   const imagePath = path.join(__dirname, "../public/images", imageName);
 
