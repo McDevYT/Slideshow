@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { SERVER_IP } from "../../models/constants";
 import "./Slideshow.css";
 import { nextImage } from "../../scripts/api";
-
-function isVideo(filename: string): boolean {
-  return filename.toLowerCase().endsWith('.mp4');
-}
+import { isVideo, SLIDESHOW_INTERVAL_MS } from "../../utils/media";
 
 function Slideshow() {
   const [currentMedia, setCurrentMedia] = useState<string | null>(null);
@@ -82,7 +79,7 @@ function Slideshow() {
       if (!currentMediaName || !isVideo(currentMediaName)) {
         loadAndFadeNextMedia();
       }
-    }, 15000);
+    }, SLIDESHOW_INTERVAL_MS);
 
     return () => {
       if (intervalRef.current) {
@@ -103,7 +100,7 @@ function Slideshow() {
       // For images, restart the interval if not running
       intervalRef.current = setInterval(() => {
         loadAndFadeNextMedia();
-      }, 15000);
+      }, SLIDESHOW_INTERVAL_MS);
     }
   }, [currentMediaName]);
 

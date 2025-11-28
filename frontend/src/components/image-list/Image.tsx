@@ -3,10 +3,7 @@ import { useConfirm } from "../comfirmation-popup/useConfirm";
 import IconButton from "../icon-button/IconButton";
 import { addImageToList, deleteImage } from "../../scripts/api";
 import { useDataContext } from "../../models/DataContext";
-
-function isVideo(filename: string): boolean {
-  return filename.toLowerCase().endsWith('.mp4');
-}
+import { isVideo } from "../../utils/media";
 
 function Image(props: { src: string; image: string }) {
   const { confirm, Confirm } = useConfirm();
@@ -51,9 +48,9 @@ function Image(props: { src: string; image: string }) {
   return (
     <div className="imageElement">
       {isVideo(props.image) ? (
-        <video className="image" src={props.src} muted />
+        <video className="image" src={props.src} muted title={props.image} />
       ) : (
-        <img className="image" src={props.src} />
+        <img className="image" src={props.src} alt={props.image} />
       )}
       <div className="controls">
         <IconButton
