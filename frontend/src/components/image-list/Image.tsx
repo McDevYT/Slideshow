@@ -4,6 +4,10 @@ import IconButton from "../icon-button/IconButton";
 import { addImageToList, deleteImage } from "../../scripts/api";
 import { useDataContext } from "../../models/DataContext";
 
+function isVideo(filename: string): boolean {
+  return filename.toLowerCase().endsWith('.mp4');
+}
+
 function Image(props: { src: string; image: string }) {
   const { confirm, Confirm } = useConfirm();
   const { fetchData } = useDataContext();
@@ -25,7 +29,7 @@ function Image(props: { src: string; image: string }) {
     fetch(src)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch image.");
+          throw new Error("Failed to fetch file.");
         }
         return response.blob();
       })
@@ -46,7 +50,11 @@ function Image(props: { src: string; image: string }) {
 
   return (
     <div className="imageElement">
-      <img className="image" src={props.src} />
+      {isVideo(props.image) ? (
+        <video className="image" src={props.src} muted />
+      ) : (
+        <img className="image" src={props.src} />
+      )}
       <div className="controls">
         <IconButton
           className="controlButton"
