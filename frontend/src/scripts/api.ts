@@ -81,7 +81,7 @@ export async function addImageToList(
 
 export async function postImage(file: File): Promise<string | null> {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("file", file);
 
   try {
     const response = await fetch(`${SERVER_IP}/upload`, {

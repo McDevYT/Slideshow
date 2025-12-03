@@ -25,10 +25,10 @@ const UploadPopup: React.FC<PopupProps> = ({ isVisible, onClose }) => {
     <Popup onClose={onClose} isVisible>
       <div className="uploadPopup">
         <label htmlFor="file-upload" className="custom-file-upload">
-          Click to upload an image
+          Click to upload an image or video
         </label>
         <input
-          accept="image/*"
+          accept="image/*,video/mp4"
           onChange={(e) => {
             setFile(e.target.files?.[0]);
           }}

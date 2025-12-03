@@ -33,10 +33,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 20 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|webp|mp4/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4'];
+    const mimetype = mimetypes.includes(file.mimetype);
+    
+    if (extname && mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files (jpeg, jpg, png, gif, webp) and video files (mp4) are allowed'));
+    }
+  }
 });
 
-app.post("/api/upload", upload.single("image"), (req, res): void => {
+app.post("/api/upload", upload.single("file"), (req, res): void => {
   const file = req.file;
   if (!file) {
     res.status(400).send("No file uploaded.");
